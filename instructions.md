@@ -115,7 +115,7 @@ Review the information below and create the described functionality.
   **Sample Request**
 
   ```
-  POST /paintings
+  POST /art/paintings
   ```
 
   **Sample Request Body JSON Data**

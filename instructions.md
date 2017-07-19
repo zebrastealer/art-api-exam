@@ -321,7 +321,7 @@ Within the Getting Started section provide guidance on how to:
 
 ### Step 5 - Add a filter
 
-- Create a `filter` query parameter on the `GET /art/paintings` endpoint to provide to flexible search capability.  
+- Create a `filter` query parameter on the `GET /art/paintings` endpoint to provide flexible search capability.  
 - Provide the ability to filter paintings by name, movement, artist and year created.  
 - The `filter` query parameter may be used in conjunction with `limit` but not with `lastItem`.
 

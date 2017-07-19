@@ -22,15 +22,6 @@ Create a RESTful api that helps to manage a list of famous art.  Include scripts
   $ yarn
   ```
 
-3. Start the API
-
-  Run `npm start` in your terminal to start the api.  The api will start on port 4000 by default.  
-
-  Two endpoints have been provided:
-
-  - `GET /` - http://localhost:4000/
-  - `GET /test` - http://localhost:4000/test
-
 ## Steps
 
 Successfully complete the first 4 steps to receive a grade of 'Meets Expectations'. Complete step 5 to receive a grade of 'Exceeds Expectations'.  Complete step 6 to receive a grade of 'Outstanding'
@@ -364,7 +355,7 @@ Within the Getting Started section provide guidance on how to:
     ]
     ```
 
-### Step 6 - Add comparison operators
+### Step 6 - Add filter comparison operators
 
   - Enhance the existing `filter` query parameter on the `GET /art/paintings` endpoint by adding `eq` (equals), `gt` (greater than), `gte` (greater than equal to) ,`lt` (less than), `lte` (less than equal to) comparison operators within your filter.
 

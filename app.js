@@ -22,40 +22,41 @@ const checkArtFields = checkfields([
   'museum',
   'type'
 ])
+const updateArtFields = checkfields([
+  'name',
+  'movement',
+  'artist',
+  'yearCreated',
+  'museum',
+  'type',
+  '_id',
+  'rev'
+])
 
 //POST /art/paintings
 
-// app.post('/art/paintings', function(req, res, next) {
-//   const art = pathOr(null, ['body'], req)
-//   const checkFields = checkArtFields(art)
-//
-//   checkfields.length > 0
-//     ? new HTTPError(400, 'missing required art fields in request body')
-//     : { fields: checkFields }
-//
-//   dal.addArt(art, function(err, result) {
-//     if (err) return next(new HTTPError(err.status, err.message, err))
-//     res.status(200).send(result)
-//   })
-// })
 app.post('/art', function(req, res, next) {
   // const type = pathOr('', ['params', 'type'], req)
   const art = pathOr(null, ['body'], req)
   const checkFields = checkArtFields(art)
 
-  checkfields.length > 0
-    ? new HTTPError(400, 'missing required art fields in request body')
-    : { fields: checkFields }
+  if (checkFields.length > 0) {
+    return next(
+      new HTTPError(400, 'Missing required fields in the request body.', {
+        fields: checkFields
+      })
+    )
+  }
 
   dal.addArt(art, function(err, result) {
     if (err) return next(new HTTPError(err.status, err.message, err))
-    res.status(200).send(result)
+    res.status(201).send(result)
   })
 })
 
 //GET /art/paintings/:id
 
-app.get(`/art/:id`, function(req, res, next) {
+app.get(`/art/paintings/:id`, function(req, res, next) {
   const artId = pathOr(null, ['params', 'id'], req)
   if (artId) {
     dal.getArt(artId, function(err, obj) {
@@ -67,34 +68,31 @@ app.get(`/art/:id`, function(req, res, next) {
   }
 })
 
-//PUT /art/paintings/:id
-
-// app.put('/art/paintings/:id', function(req, res, next) {
-//   const artId = pathOr(null, ['params', 'id'], req)
-//   const body = pathOr(null, ['body'], req)
-//   console.log(body)
-//   if (!body || keys(body).length === 0)
-//     return next(new HTTPError(400, 'the request body is missing required data'))
-//   dal.updateArt(body, function(err, obj) {
-//     if (err) return next(new HTTPError(err.status, err.message, err))
-//     res.status(200).send(obj)
-//   })
-// })
-app.put('/art/:id', function(req, res, next) {
+app.put('/art/paintings/:id', function(req, res, next) {
   // const type = pathOr({ $all }, ['params', 'type'], req)
+
   const artId = pathOr(null, ['params', 'id'], req)
   const body = pathOr(null, ['body'], req)
-  console.log(body)
   if (!body || keys(body).length === 0)
     return next(new HTTPError(400, 'the request body is missing required data'))
-  dal.updateArt(body, function(err, obj) {
+
+  const checkFields = updateArtFields(body)
+  if (checkFields.length > 0) {
+    return next(
+      new HTTPError(400, 'Missing required fields in the request body.', {
+        fields: checkFields
+      })
+    )
+  }
+
+  dal.updateArt(body, function(err, doc) {
     if (err) return next(new HTTPError(err.status, err.message, err))
-    res.status(200).send(obj)
+    res.status(200).send(doc)
   })
 })
 //DELETE /art/paintings/:id
 
-app.delete('/art/:id', function(req, res, next) {
+app.delete('/art/paintings/:id', function(req, res, next) {
   const artId = pathOr(null, ['params', 'id'], req)
 
   dal.deleteArt(artId, function(err, response) {

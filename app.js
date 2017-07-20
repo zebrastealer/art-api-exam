@@ -80,8 +80,8 @@ app.get(`/art/:id`, function(req, res, next) {
 //     res.status(200).send(obj)
 //   })
 // })
-app.put('/art/:type/:id', function(req, res, next) {
-  const type = pathOr({ $all }, ['params', 'type'], req)
+app.put('/art/:id', function(req, res, next) {
+  // const type = pathOr({ $all }, ['params', 'type'], req)
   const artId = pathOr(null, ['params', 'id'], req)
   const body = pathOr(null, ['body'], req)
   console.log(body)
@@ -94,11 +94,10 @@ app.put('/art/:type/:id', function(req, res, next) {
 })
 //DELETE /art/paintings/:id
 
-app.delete('/art/:type/:id', function(req, res, next) {
-  const type = pathOr(null, ['params', 'type'], req)
+app.delete('/art/:id', function(req, res, next) {
   const artId = pathOr(null, ['params', 'id'], req)
 
-  dal.deleteArt(artId, function(err, res) {
+  dal.deleteArt(artId, function(err, response) {
     if (err) return next(new HTTPError(err.status, err.message, err))
     res.status(200).send(response)
   })

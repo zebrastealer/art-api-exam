@@ -106,7 +106,7 @@ http://localhost:**PORT#**/art/**_ID**
 ```
 -Required fields:
 ```
-'name','movement','artist','yearCreated','museum','type'
+'name','movement','artist','yearCreated','museum','type','_id','rev'
 ```
 
 **DELETE**

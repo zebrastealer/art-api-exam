@@ -1,4 +1,4 @@
-These are instructions for running the art-api-exam, created by the talented and Mr. Worthington.
+These are instructions for running the art-api-exam, created by the talented Mr. Worthington.
 
 ## Getting Started
 
@@ -43,13 +43,13 @@ db.bulkDocs(**YOURCONSTANT**, function(err, res) {
 
 - Add an index if desired.  The **load-index.js** located in the root directory of the **art-api-exam**
 - An example index (commented out) is included within the **load-index.js** file to use as a template for creating a new index.
-- Additional document on creating indexes and the numerous options that can be used may be found here:
+- Additional documentation on creating indexes and the numerous options that can be used may be found here:
 
 ```
 https://pouchdb.com/api.html#create_index
 ```
 
-Once you are ready to bulk load data and/or create and index, you may do so by executing these commands from a terminal window or command line.
+Once you are ready to bulk load data and/or create an index, you may do so by executing these commands from a terminal window or command line.
 
 -Bulk load documents:
 ```
@@ -63,7 +63,7 @@ npm run createindex
 
 ### Step 4 - Start the API
 
-- Everything should be configured for you to start the API. From the termianl or cmd prompt run the following:
+- Everything should be configured for you to start the API. From the terminal or cmd prompt run the following:
 
 ```
 npm start
@@ -87,11 +87,11 @@ http://localhost:**PORT#**/art/
 http://localhost:**PORT#**/art/**_ID**
 ```
 -Using a filter with optional, limit, last Item
-
+```
 http://localhost:**PORT#**/art/?filter=**FIELD NAME**&lastItem=**LastItem**_ID**&limit=**number_of_results**
-
+```
 **POST**
--Add new art, using Post in body:
+-Add new art, using post in body:
 ```
 http://localhost:**PORT#**/art
 ```
@@ -100,7 +100,7 @@ http://localhost:**PORT#**/art
 'name','movement','artist','yearCreated','museum','type'
 ```
 **PUT**
---Update existing art:
+-Update existing art, using put:
 ```
 http://localhost:**PORT#**/art/**_ID**
 ```
@@ -110,5 +110,7 @@ http://localhost:**PORT#**/art/**_ID**
 ```
 
 **DELETE**
--Delete art:
+-Delete art, using delete.:
+```
 http://localhost:**PORT#**/art/**_ID**
+```

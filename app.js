@@ -1,18 +1,27 @@
 require('dotenv').config()
+
 const express = require('express')
 const app = express()
-const dal = require('./dal.js')
+const dal = require(`./${process.env.DAL}`)
 const port = process.env.PORT || 6000
-const { pathOr, keys, assoc } = require('ramda')
+const { pathOr, keys, assoc, difference } = require('ramda')
 const checkfields = require('./lib/fieldchecker.js')
 const HTTPError = require('node-http-error')
 const bodyParser = require('body-parser')
 
 app.use(bodyParser.json())
 
+//////////////////////////////
+//////////TEST API///////////
+/////////////////////////////
+
 app.get('/', function(req, res, next) {
   res.send('Welcome to the Art API. Manage all the paintings.')
 })
+
+//////////////////////////////
+//////REQUIRED FIELDS/////////
+/////////////////////////////
 
 const checkArtFields = checkfields([
   'name',
@@ -30,8 +39,12 @@ const updateArtFields = checkfields([
   'museum',
   'type',
   '_id',
-  'rev'
+  '_rev'
 ])
+
+//////////////////////////////
+/////////CREATE ART//////////
+/////////////////////////////
 
 //POST /art/paintings
 
@@ -54,6 +67,10 @@ app.post('/art', function(req, res, next) {
   })
 })
 
+//////////////////////////////
+//////////FIND ART//////////
+/////////////////////////////
+
 //GET /art/paintings/:id
 
 app.get(`/art/paintings/:id`, function(req, res, next) {
@@ -69,8 +86,6 @@ app.get(`/art/paintings/:id`, function(req, res, next) {
 })
 
 app.put('/art/paintings/:id', function(req, res, next) {
-  // const type = pathOr({ $all }, ['params', 'type'], req)
-
   const artId = pathOr(null, ['params', 'id'], req)
   const body = pathOr(null, ['body'], req)
   if (!body || keys(body).length === 0)
@@ -84,12 +99,22 @@ app.put('/art/paintings/:id', function(req, res, next) {
       })
     )
   }
+  //////////////////////////////
+  //////////UPDATE ART//////////
+  /////////////////////////////
+
+  //UPDATE /art/paintings/:id
 
   dal.updateArt(body, function(err, doc) {
     if (err) return next(new HTTPError(err.status, err.message, err))
     res.status(200).send(doc)
   })
 })
+
+//////////////////////////////
+/////////DELETE ART//////////
+/////////////////////////////
+
 //DELETE /art/paintings/:id
 
 app.delete('/art/paintings/:id', function(req, res, next) {
@@ -101,27 +126,58 @@ app.delete('/art/paintings/:id', function(req, res, next) {
   })
 })
 
+//////////////////////////////
+////////GET ALL ART//////////
+/////////////////////////////
+
 //GET /art/paintings
-//app.get('/art')
 
-app.get('/art/', function(req, res, next) {
-  //const type = pathOr(assoc('$gte', null, {}), ['params', 'type'], req)
-  //console.log('type: ', type)
-  const limit = pathOr(15, ['query', 'limit'], req)
+app.get('/art/paintings', function(req, res, next) {
+  var limit = pathOr(10, ['query', 'limit'], req)
+
+  const filter = pathOr(null, ['query', 'filter'], req)
   const lastItem = pathOr(null, ['query', 'lastItem'], req)
-  var filter = pathOr(null, ['query', 'filter'], req)
-  console.log('filter in app', filter)
+  limit = Number(limit)
 
-  dal.listArt(Number(limit), lastItem, filter, function(err, data) {
+  dal.listArt(lastItem, filter, limit, function(err, data) {
     if (err) return next(new HTTPError(err.status, err.message, err))
     res.status(200).send(data)
   })
 })
 
-///MIDDLEWARE///
+//////////////////////////////
+///////////REPORTS///////////
+/////////////////////////////
+
+//GET /art/reports/countbycity
+//Count paintings per city
+
+app.get('/art/reports/countbycity', function(req, res, next) {
+  var limit = pathOr(10, ['query', 'limit'], req)
+  limit = Number(limit)
+  const filter = pathOr(null, ['query', 'filter'], req)
+
+  const lastItem = pathOr(null, ['query', 'lastItem'], req)
+
+  dal.artCountByCity(lastItem, filter, limit, function(err, data) {
+    if (err) return next(new HTTPError(err.status, err.message, err))
+    res.status(200).send(data)
+  })
+})
+
+//////////////////////////////
+//////////MIDDLEWARE//////////
+/////////////////////////////
+
+const callback = (res, next) => (err, result) =>
+  err
+    ? next(new HTTPError(err.status, err.message, err))
+    : res.status(200).send(result)
+
 app.use(function(err, req, res, next) {
   console.log(req.method, req.path, err)
   res.status(err.status || 500)
   res.send(err)
 })
+
 app.listen(port, () => console.log('api is up and running on port: ', port))

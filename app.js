@@ -134,7 +134,6 @@ app.delete('/art/paintings/:id', function(req, res, next) {
 
 app.get('/art/paintings', function(req, res, next) {
   var limit = pathOr(10, ['query', 'limit'], req)
-
   const filter = pathOr(null, ['query', 'filter'], req)
   const lastItem = pathOr(null, ['query', 'lastItem'], req)
   limit = Number(limit)

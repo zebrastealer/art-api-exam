@@ -1,4 +1,4 @@
-These are instructions for running the art-api-exam, created by the talented Mr. Worthington.
+These are instructions for running the art-mysql-exam, created by the talented Mr. Worthington.  This version of the project supports connection to both a couchDB or mySQL instance, depending on the API used.  Please be aware the instructions below will identify which steps are different depending on whether you are using a couchDB or mySQL backend.
 
 ## Getting Started
 
@@ -6,11 +6,13 @@ These are instructions for running the art-api-exam, created by the talented Mr.
 
   ```
   $ git clone https://github.com/zebrastealer/art-api-exam
-  $ cd art-api-exam
+  $ cd art-mysql-exam
   $ yarn
   ```
 
 ### Step 2 - Establish environment variables
+
+###For COUCHDB Backend###
 
 - In order for the project to run, a CouchDB database must be created and connected to the project.
 - During development an IBM cloudant (couchDB) database was used.  A free 30 day trial Cloudant account may be available at the following URL:
@@ -25,7 +27,8 @@ These are instructions for running the art-api-exam, created by the talented Mr.
   ```
   https://**key**:**password**@**url_of_couch_db**
   ```
-
+###For MySQL Backend###
+-Please skip to the MySQL Backend section of Step 3.
 
 ### Step 3 - Populate your database
 - The **load-data.js** file, located in the root directory of the **art-api-exam** project contains code for bulk adding documents to your database.  The file contains a sample constant "art", commented out, which may be used as a template for creating new documents for bulk upload.
@@ -61,10 +64,37 @@ npm run loaddata
 npm run createindex
 ```
 
+###For MySQL Backend###
+-These instructions assume familiarity with mysql databases along with having a running mysql database instance with access to the root user and password to install the database schema and populate the database tables and views.  
+
+-From your MySQL terminal prompt, run the database import file -
+
+```
+cd sql-scripts
+$ mysql < art-mysql-exam-gw.sql -u root -p -h 0.0.0.0 -P 3306
+```
+Now create a new **.ENV** file in the root directory of the art-mysql-exam project, edit the file to contain the following information - adjust the data as required to match your own configuration.
+
+```
+MYSQL_USER=root
+MYSQL_HOST=0.0.0.0
+MYSQL_PASSWORD=******
+MYSQL_DATABASE=art-mysql-exam
+DAL=./dal-sql.js
+
+```
 ### Step 4 - Start the API
 
-- Everything should be configured for you to start the API. From the terminal or cmd prompt run the following:
+- Everything should be configured for you to start the API. The package.json file contains scripts configured to start either version of the backend.  From the terminal or cmd prompt you can start either version as follows.
 
+###For COUCHDB Backend###
+- The CouchDB version of the api may be started by executing this command in the terminal:
+```
+npm test
+```
+
+###For MySQL Backend###
+- The MySQL version of the api may be started by executing this command in the terminal:
 ```
 npm start
 ```
@@ -80,15 +110,15 @@ https://www.getpostman.com/
 **GET**
 -all art:
 ```
-http://localhost:**PORT#**/art/
+http://localhost:**PORT#**/art/paintings
 ```
 -Specific art work by Id:
 ```
-http://localhost:**PORT#**/art/**_ID**
+http://localhost:**PORT#**/art/paintings/:id
 ```
 -Using a filter with optional, limit, last Item
 ```
-http://localhost:**PORT#**/art/?filter=**FIELD NAME**&lastItem=**LastItem**_ID**&limit=**number_of_results**
+http://localhost:**PORT#**/art/paintings?filter=**FIELD NAME**&lastItem=**LastItem**_ID**&limit=**number_of_results**
 ```
 **POST**
 -Add new art, using post in body:
@@ -99,16 +129,46 @@ http://localhost:**PORT#**/art
 ```
 'name','movement','artist','yearCreated','museum','type'
 ```
+
+Example JSON for Create/Post:
+```
+{
+    "name": "The Creation of Adam",
+    "movement": "Renaissance",
+    "artist": "Michaelangelo the Great",
+    "type": "painting",
+    "yearCreated": 1504,
+    "museum": {
+        "name": "Galleria dell'Accademia",
+        "location": "Florenece"
+    }
+}
+```
 **PUT**
 -Update existing art, using put:
 ```
-http://localhost:**PORT#**/art/**_ID**
+http://localhost:**PORT#**/art/paintings/**_ID**
 ```
 -Required fields:
 ```
-'name','movement','artist','yearCreated','museum','type','_id','rev'
+'name','movement','artist','yearCreated','museum','type','_id','_rev'
 ```
+Example JSON for update:
+```
+{  
+   "_id": 1,
+    "_rev": "blahblah"
+    "name": "Painting 1",
+    "artist": "Salvador Dali",
+    "yearCreated": 1937,
+    "movement": "surrealism"
+    "museum": {
+        "name": "Santa Maria delle Grazie",
+        "location": "Milan"
+    }
 
+}
+```
 **DELETE**
 -Delete art, using delete.:
 ```

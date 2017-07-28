@@ -4,8 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "DAL=dal-sql PORT=6000 node app.js",
+    "test": "DAL=dal PORT=3000 node app.js",
     "loaddata": "node load-data.js",
     "createindex": "node load-index.js"
   },
@@ -14,8 +14,10 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.17.2",
+    "cors": "^2.8.4",
     "dotenv": "^4.0.0",
     "express": "^4.15.3",
+    "mysql": "^2.14.0",
     "node-http-error": "^1.1.0",
     "pouchdb": "6.2.0",
     "pouchdb-find": "6.2.0",

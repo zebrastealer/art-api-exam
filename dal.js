@@ -75,36 +75,7 @@ function deleteArt(artId, callback) {
 function listArt(limit, lastItem, filter, callback) {
   var query = {}
   var selectorValue = {}
-  //TODO add an adjustment to filter to look for core pouchdb-find commands - gt, gte, lt,lte, eq and modifies selectorValue accordingly
   if (filter) {
-    // TODO:  finish reasearch on support of multiple field queries
-    // console.log('filter in dal is: ', filter)
-    //
-    // if (contains('*', filter)) {
-    //   var temparr = split('*', filter)
-    //   var newfilter = []
-    //   var artFilter = []
-    //   const temparrlen = temparr.length
-    //   for (var i = 0; i < temparrlen; i++) {
-    //     newfilter.push(split(':', temparr[i]))
-    //     var filterField = newfilter[i]
-    //     console.log('XXXXX', filterField)
-    //     var filterValue = Number(newfilter[i + 1])
-    //       ? Number(newfilter[i + 1])
-    //       : newfilter[i + 1]
-    //     selectorValue = { filterField: filterValue }
-    //     console.log('selectorvalue', selectorValue)
-    //     query = {
-    //       selector: selectorValue,
-    //       limit
-    //     }
-    //   }
-    // const filterField = head(artFilter)
-    // const filterValue = Number(last(artFilter))
-    //   ? Number(last(artFilter))
-    //   : last(artFilter)
-    // } else {
-    // console.log('went to else in dal')
     const artFilter = split(':', filter)
     const filterField = head(artFilter)
     const filterValue = Number(last(artFilter))

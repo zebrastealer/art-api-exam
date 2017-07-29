@@ -84,6 +84,11 @@ app.get(`/art/paintings/:id`, function(req, res, next) {
     return next(new HTTPError(400, 'missing required art Id in path'))
   }
 })
+//////////////////////////////
+//////////UPDATE ART//////////
+/////////////////////////////
+
+//UPDATE /art/paintings/:id
 
 app.put('/art/paintings/:id', function(req, res, next) {
   const artId = pathOr(null, ['params', 'id'], req)
@@ -99,11 +104,6 @@ app.put('/art/paintings/:id', function(req, res, next) {
       })
     )
   }
-  //////////////////////////////
-  //////////UPDATE ART//////////
-  /////////////////////////////
-
-  //UPDATE /art/paintings/:id
 
   dal.updateArt(body, function(err, doc) {
     if (err) return next(new HTTPError(err.status, err.message, err))

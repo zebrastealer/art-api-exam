@@ -41,7 +41,7 @@ const deleteArt = (artId, callback) =>
 
 const listArt = (lastItem, filter, limit, callback) => {
   dalHelper.returnView(
-    'paintinglist',
+    'painting',
     lastItem,
     filter,
     limit,

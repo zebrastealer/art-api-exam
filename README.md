@@ -116,7 +116,12 @@ http://localhost:**PORT#**/art/paintings
 ```
 http://localhost:**PORT#**/art/paintings/:id
 ```
--Using a filter with optional, limit, last Item
+-Using a filter with optional limit
+
+```
+http://localhost:6000/art/paintings?filter=artist:Michaelangelo the Great&limit=4
+```
+-Using a filter with optional limit & last Item
 ```
 http://localhost:**PORT#**/art/paintings?filter=**FIELD NAME**&lastItem=**LastItem**_ID**&limit=**number_of_results**
 ```

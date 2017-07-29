@@ -12,7 +12,7 @@ These are instructions for running the art-mysql-exam, created by the talented M
 
 ### Step 2 - Establish environment variables
 
-###For COUCHDB Backend
+***For COUCHDB Backend***
 
 - In order for the project to run, a CouchDB database must be created and connected to the project.
 - During development an IBM cloudant (couchDB) database was used.  A free 30 day trial Cloudant account may be available at the following URL:
@@ -27,7 +27,7 @@ These are instructions for running the art-mysql-exam, created by the talented M
   ```
   https://**key**:**password**@**url_of_couch_db**
   ```
-###For MySQL Backend
+***For MySQL Backend***
 -Please skip to the MySQL Backend section of Step 3.
 
 ### Step 3 - Populate your database
@@ -64,7 +64,7 @@ npm run loaddata
 npm run createindex
 ```
 
-###For MySQL Backend
+***For MySQL Backend***
 -These instructions assume familiarity with mysql databases along with having a running mysql database instance with access to the root user and password to install the database schema and populate the database tables and views.  
 
 -From your MySQL terminal prompt, run the database import file -
@@ -87,13 +87,13 @@ DAL=./dal-sql.js
 
 - Everything should be configured for you to start the API. The package.json file contains scripts configured to start either version of the backend.  From the terminal or cmd prompt you can start either version as follows.
 
-###For COUCHDB Backend
+***For COUCHDB Backend***
 - The CouchDB version of the api may be started by executing this command in the terminal:
 ```
 npm test
 ```
 
-###For MySQL Backend
+***For MySQL Backend***
 - The MySQL version of the api may be started by executing this command in the terminal:
 ```
 npm start
@@ -135,7 +135,7 @@ http://localhost:**PORT#**/art
 'name','movement','artist','yearCreated','museum','type'
 ```
 
-Example JSON for Create/Post:
+*Example JSON for Create/Post:*
 ```
 {
     "name": "The Creation of Adam",
@@ -158,7 +158,7 @@ http://localhost:**PORT#**/art/paintings/**_ID**
 ```
 'name','movement','artist','yearCreated','museum','type','_id','_rev'
 ```
-Example JSON for update:
+*Example JSON for update:*
 ```
 {  
    "_id": 1,
